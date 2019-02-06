@@ -4,4 +4,14 @@
   height: 40px;
   border-radius: 50%; }
 
+.hit {
+  background: hotpink !important; }
+
+.counter {
+  height: 100px;
+  width: 100px;
+  background: hotpink;
+  border-color: black;
+  justify-content: center; }
+
 /*# sourceMappingURL=style.css.map */

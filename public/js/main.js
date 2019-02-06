@@ -136,8 +136,10 @@ function () {
   _createClass(Bird, [{
     key: "addClickHandler",
     value: function addClickHandler() {
+      var _this = this;
+
       this.el.addEventListener('click', function () {
-        return console.log('bird was shot');
+        return _this.el.classList.add('hit');
       });
     }
   }, {
@@ -170,6 +172,68 @@ function () {
 
 /***/ }),
 
+/***/ "./js/Counter.js":
+/*!***********************!*\
+  !*** ./js/Counter.js ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Counter; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Counter =
+/*#__PURE__*/
+function () {
+  function Counter() {
+    _classCallCheck(this, Counter);
+
+    this.playersPoints = 0;
+    this.birdsPoints = 0;
+    this.el = this.render();
+    this.update();
+  }
+
+  _createClass(Counter, [{
+    key: "addPlayerPoint",
+    value: function addPlayerPoint() {
+      this.playersPoints += 1;
+      this.update();
+    }
+  }, {
+    key: "addBirdsPoint",
+    value: function addBirdsPoint() {
+      this.birdsPoints += 1;
+      this.update();
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      this.el.innerHTML = this.playersPoints + ':' + this.birdsPoints; //aktualisiert den Text IM HTML-Element
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var el = document.createElement('div');
+      el.className = 'counter';
+      document.body.insertAdjacentElement('afterbegin', el);
+      return el;
+    }
+  }]);
+
+  return Counter;
+}();
+
+
+
+/***/ }),
+
 /***/ "./js/Game.js":
 /*!********************!*\
   !*** ./js/Game.js ***!
@@ -181,6 +245,7 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _Bird__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Bird */ "./js/Bird.js");
+/* harmony import */ var _Counter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Counter */ "./js/Counter.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -199,6 +264,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var Game =
 /*#__PURE__*/
 function () {
@@ -209,18 +275,29 @@ function () {
 
     _defineProperty(this, "birds", []);
 
+    _defineProperty(this, "loopCounter", 0);
+
     _defineProperty(this, "removeBird", function (bird) {
       var index = _this.birds.indexOf(bird);
 
       _this.birds = [].concat(_toConsumableArray(_this.birds.slice(0, index)), _toConsumableArray(_this.birds.slice(index + 1)));
-      console.log(_this.birds.length);
     });
 
     this.createBirds();
+    this.createCounter();
     this.loop();
   }
 
   _createClass(Game, [{
+    key: "createCounter",
+    value: function createCounter() {
+      this.counter = new _Counter__WEBPACK_IMPORTED_MODULE_1__["default"]();
+      this.counter.addPlayerPoint();
+      this.counter.addPlayerPoint();
+      this.counter.addBirdsPoint();
+      this.counter.addBirdsPoint();
+    }
+  }, {
     key: "createBirds",
     value: function createBirds() {
       this.addBird();
@@ -241,7 +318,7 @@ function () {
     value: function loop() {
       var _this2 = this;
 
-      Math.random() < 1 / 60 && this.addBird();
+      this.loopCounter++ % 60 === 0 && this.addBird();
       this.birds.forEach(function (bird) {
         return bird.update();
       });
