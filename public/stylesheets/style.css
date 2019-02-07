@@ -1,17 +1,32 @@
-.bird {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%; }
-
-.hit {
-  background: hotpink !important; }
-
-.counter {
-  height: 100px;
-  width: 100px;
-  background: hotpink;
-  border-color: black;
-  justify-content: center; }
+body {
+  background: lightskyblue;
+  overflow: hidden; }
+  body .bird {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    border-radius: 100px / 50px; }
+  body .counter {
+    display: flex;
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background: lightcyan;
+    right: 40px;
+    top: 5px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: darkslategrey; }
+  body .hunter {
+    display: flex;
+    position: absolute;
+    height: 100px;
+    width: 200px;
+    background: green;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%); }
 
 /*# sourceMappingURL=style.css.map */

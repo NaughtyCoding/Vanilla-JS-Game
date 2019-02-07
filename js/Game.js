@@ -1,47 +1,56 @@
 import Bird from './Bird'
 import Counter from './Counter'
+import Hunter from './Hunter'
 
 export default class Game {
-  birds = []
+  entities = []
   loopCounter = 0
 
   constructor() {
-    this.createBirds()
     this.createCounter()
+    this.createHunter()
     this.loop()
   }
 
   createCounter() {
     this.counter = new Counter()
-    this.counter.addPlayerPoint()
-    this.counter.addPlayerPoint()
-    this.counter.addBirdsPoint()
-    this.counter.addBirdsPoint()
   }
 
-  createBirds() {
-    this.addBird()
-    this.addBird()
-    this.addBird()
-    this.addBird()
+  createHunter() {
+    this.hunter = new Hunter()
+    this.entities = [...this.entities, this.hunter]
   }
 
   addBird() {
     const config = {
-      removeBird: this.removeBird,
+      onRemove: this.removeBird,
+      onClick: this.updatePlayerPoints,
+      onEscape: this.updateBirdsPoints,
     }
 
-    this.birds = [...this.birds, new Bird(config)]
+    this.entities = [...this.entities, new Bird(config)]
   }
 
   removeBird = bird => {
-    const index = this.birds.indexOf(bird)
-    this.birds = [...this.birds.slice(0, index), ...this.birds.slice(index + 1)]
+    const index = this.entities.indexOf(bird)
+    this.entities = [
+      ...this.entities.slice(0, index),
+      ...this.entities.slice(index + 1),
+    ]
+    this.counter.addBirdsPoint()
+  }
+
+  updatePlayerPoints = () => {
+    this.counter.addPlayerPoint()
+  }
+
+  updateBirdsPoint = () => {
+    this.counter.addBirdsPoint()
   }
 
   loop() {
     this.loopCounter++ % 60 === 0 && this.addBird()
-    this.birds.forEach(bird => bird.update())
+    this.entities.forEach(entity => entity.update())
     requestAnimationFrame(() => this.loop())
   }
 }
